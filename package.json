@@ -25,17 +25,35 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node ./dist/server.js",
-    "dev": "tsx ./src/server.ts"
+    "dev": "tsx watch src/server.ts"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "chalk": "^5.6.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.2",
+    "nodemailer": "^7.0.12",
+    "redis": "^5.10.0",
+    "validator": "^13.15.26",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.5",
+    "@types/bcrypt": "^6.0.0",
+    "@types/chalk": "^0.4.31",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^25.0.3",
+    "@types/nodemailer": "^7.0.4",
+    "@types/validator": "^13.15.10",
     "prettier": "^3.7.4",
     "typescript": "^5.9.3"
   }

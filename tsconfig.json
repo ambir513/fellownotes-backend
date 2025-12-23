@@ -7,7 +7,8 @@
     "esModuleInterop": true,
     "module": "node16",
     "moduleResolution": "nodenext",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]

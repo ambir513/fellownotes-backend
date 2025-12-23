@@ -1,0 +1,39 @@
+import mongoose from "mongoose";
+
+const postSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    contentType: {
+      type: String,
+      enum: ["text", "image"],
+      validate: {
+        validator: function (v: string) {
+          return ["text", "image"].includes(v);
+        },
+        message: (props: any) => `${props.value} is not a valid content type`,
+      },
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+      minLength: [1, "Content must be at least 1 character"],
+      maxLength: [1000, "Content cannot be more than 1000 characters"],
+    },
+    image: {
+      type: String,
+      maxLength: [500, "Image URL cannot be more than 500 characters"],
+    },
+    like: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true },
+);
+
+const Post = mongoose.model("Post", postSchema);
+export default Post;
