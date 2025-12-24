@@ -6,17 +6,6 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
-    contentType: {
-      type: String,
-      enum: ["text", "image"],
-      validate: {
-        validator: function (v: string) {
-          return ["text", "image"].includes(v);
-        },
-        message: (props: any) => `${props.value} is not a valid content type`,
-      },
-      required: true,
-    },
     text: {
       type: String,
       required: true,
@@ -30,6 +19,11 @@ const postSchema = new mongoose.Schema(
     like: {
       type: Number,
       default: 0,
+    },
+    comments: {
+      type: [mongoose.Types.ObjectId],
+      ref: "Comment",
+      default: [],
     },
   },
   { timestamps: true },

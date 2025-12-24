@@ -6,7 +6,7 @@ import { ZodSchema } from "zod";
  * @param body
  * @returns number
  */
-export default function parseZodError(schema?: ZodSchema, body?: any): any {
+export default function verifyInputs(schema?: ZodSchema, body?: any): any {
   const error = schema?.safeParse(body);
 
   if (

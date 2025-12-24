@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import logger from "./utils/logger.js";
 import checkRoute from "./utils/check-route-m.js";
 import { redisClientConnect } from "./libs/redis.js";
+import accountRouter from "./api/v1/account/index.js";
+import connectionRouter from "./api/v1/connection/index.js";
 
 dotenv.config();
 const app = express();
@@ -25,6 +27,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 app.use("/api/v1/auth", checkRoute, authRouter);
+app.use("/api/v1/account", accountRouter);
+app.use("/api/v1/connection", connectionRouter);
 
 app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   return failureRes(res, err.message, 500);

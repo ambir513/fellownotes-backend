@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
-import validator from "validator";
+import validator, { trim } from "validator";
 
 const userSchema = new mongoose.Schema(
   {
-    avatar: { type: String },
+    avatar: { type: String, default: "avatar.png" },
     username: {
       type: String,
       unique: true,
       minLength: [3, "Username must be at least 3 characters"],
       maxLength: [30, "Username cannot be more than 30 characters"],
+      trim: true,
       required: true,
       index: true,
     },
@@ -16,6 +17,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
+      trim: true,
       index: true,
       lowercase: true,
       minLength: [10, "Email must be at least 10 characters"],
@@ -37,11 +39,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       maxLength: [150, "Location cannot be more than 150 characters"],
     },
-    connection: { type: Number, default: 0 },
     course: {
       type: String,
       maxLength: [200, "Course cannot be more than 200 characters"],
     },
+    plan: { type: String, enum: ["free", "pro", "premium"], default: "free" },
   },
   { timestamps: true },
 );
