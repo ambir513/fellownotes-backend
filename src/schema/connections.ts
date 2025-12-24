@@ -10,15 +10,6 @@ const connectionSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
-    status: {
-      type: String,
-      validate: {
-        validator: function (v: string) {
-          return ["pending", "accepted", "rejected"].includes(v);
-        },
-        message: (props: any) => `${props.value} is not a valid content type`,
-      },
-    },
   },
   { timestamps: true },
 );

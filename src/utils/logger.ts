@@ -4,7 +4,7 @@ const log = console.log;
 
 export default function logger(
   message: string,
-  type: "info" | "error" | "success" = "info",
+  type: "info" | "error" | "warning" | "success" = "info",
 ) {
   const time = new Date().toLocaleTimeString();
   switch (type) {
@@ -13,6 +13,9 @@ export default function logger(
       break;
     case "error":
       log(chalk.red(`[${time}] [ERROR]: ${message}`));
+      break;
+    case "warning":
+      log(chalk.yellow(`[${time}] [WARNING]: ${message}`));
       break;
     case "success":
       log(chalk.green(`[${time}] [SUCCESS]: ${message}`));
