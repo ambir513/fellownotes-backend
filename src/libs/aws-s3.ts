@@ -1,8 +1,6 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import dotenv from "dotenv";
 
-dotenv.config();
 
 const client = new S3Client({
   region: process.env.AWS_REGION!,

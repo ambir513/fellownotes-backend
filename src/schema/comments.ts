@@ -1,12 +1,7 @@
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema(
+const ReplySchema = new mongoose.Schema(
   {
-    postId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-      required: true,
-    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -15,12 +10,38 @@ const commentSchema = new mongoose.Schema(
     comment: {
       type: String,
       required: true,
-      maxLength: [500, "Comment cannot be more than 500 characters"],
-      minLength: [1, "Comment must be at least 1 character"],
+      minlength: [1, "Comment must be at least 1 character long"],
+      maxlength: [500, "Comment can be maximum 500 characters long"],
     },
   },
   { timestamps: true },
 );
 
-const Comment = mongoose.model("Comment", commentSchema);
+const CommentSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+      minlength: [1, "Comment must be at least 1 character long"],
+      maxlength: [500, "Comment can be maximum 500 characters long"],
+    },
+    replies: {
+      type: [ReplySchema],
+      default: [],
+    },
+  },
+  { timestamps: true },
+);
+
+const Comment = mongoose.model("Comment", CommentSchema);
 export default Comment;

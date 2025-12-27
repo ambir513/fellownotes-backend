@@ -18,6 +18,8 @@ import logger from "../../../utils/logger.js";
 
 const authRouter = expres.Router();
 
+const RUNNING_MODE = process.env.NODE_ENV! || "development";
+
 authRouter.get(
   "/login",
   verifyCookies,
@@ -41,15 +43,20 @@ authRouter.get(
       return failureRes(res, "Email is already send", 401);
     }
 
-    await sendEmail(email, "Your Login Link (Expires in 1 Hour)", {
-      url: `https://localhost:3000/verify-email?token=${token}`,
-    });
+    if (RUNNING_MODE === "development") {
+      return successRes(res, "Development mode - token generated", 200, {
+        url: `${token}`,
+      });
+    } else {
+      await sendEmail(email, "Your Login Link (Expires in 1 Hour)", {
+        url: `https://localhost:3000/verify-email?token=${token}`,
+      });
 
-    await createLoginSession(email);
-
-    return successRes(res, "check your email", 200, {
-      url: `https://localhost:3000/verify-email?token=${token}`,
-    });
+      await createLoginSession(email);
+      return successRes(res, "check your email", 200, {
+        url: `https://localhost:3000/verify-email?token=${token}`,
+      });
+    }
   }),
 );
 

@@ -1,5 +1,5 @@
+import "./libs/dotenv.js";
 import express, { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import { failureRes } from "./utils/response.js";
 import connectDB from "./libs/mongodb.js";
@@ -10,8 +10,9 @@ import checkRoute from "./utils/check-route-m.js";
 import { redisClientConnect } from "./libs/redis.js";
 import accountRouter from "./api/v1/account/index.js";
 import connectionRouter from "./api/v1/connection/index.js";
+import postRouter from "./api/v1/post/index.js";
+import commentsRouter from "./api/v1/comments/index.js";
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT! || 5001;
 
@@ -29,6 +30,8 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use("/api/v1/auth", checkRoute, authRouter);
 app.use("/api/v1/account", accountRouter);
 app.use("/api/v1/connection", connectionRouter);
+app.use("/api/v1/post", postRouter);
+app.use("/api/v1/comments", commentsRouter);
 
 app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   return failureRes(res, err.message, 500);
