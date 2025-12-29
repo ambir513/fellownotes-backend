@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import logger from "../utils/logger.js";
 
-
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -17,6 +16,14 @@ export default async function sendEmail(
   body: any,
 ) {
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      logger(
+        "Email credentials are not set. Cannot send email.",
+
+        "error",
+      );
+      return;
+    }
     const response = await transporter.sendMail({
       from: `"Fellow Notes" <otp.providers@gmail.com>`,
       to,
