@@ -33,32 +33,29 @@ if (!process.env.SECRET_KEY!) {
   process.exit(1);
 }
 if (!process.env.EMAIL_USER!) {
-  logger("EMAIL_USER is not defined in environment variables", "error");
-  process.exit(1);
+  logger("EMAIL_USER is not defined in environment variables", "warning");
 }
 if (!process.env.EMAIL_PASS!) {
-  logger("EMAIL_PASS is not defined in environment variables", "error");
-  process.exit(1);
+  logger("EMAIL_PASS is not defined in environment variables", "warning");
 }
 if (!process.env.AWS_ACCESS_KEY_ID!) {
-  logger("AWS_ACCESS_KEY_ID is not defined in environment variables", "error");
-  process.exit(1);
+  logger(
+    "AWS_ACCESS_KEY_ID is not defined in environment variables",
+    "warning",
+  );
 }
 
 if (!process.env.AWS_SECRET_ACCESS_KEY!) {
   logger(
     "AWS_SECRET_ACCESS_KEY is not defined in environment variables",
-    "error",
+    "warning",
   );
-  process.exit(1);
 }
 
 if (!process.env.AWS_REGION!) {
-  logger("AWS_REGION is not defined in environment variables", "error");
-  process.exit(1);
+  logger("AWS_REGION is not defined in environment variables", "warning");
 }
 
 if (!process.env.AWS_BUCKET_NAME!) {
-  logger("AWS_BUCKET_NAME is not defined in environment variables", "error");
-  process.exit(1);
+  logger("AWS_BUCKET_NAME is not defined in environment variables", "warning");
 }

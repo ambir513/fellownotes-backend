@@ -12,6 +12,11 @@
 /build
 /dist
 
+# docker testing
+docker-compose.yaml
+.dockerignore
+Dockerfile
+
 # misc
 .DS_Store
 *.pem

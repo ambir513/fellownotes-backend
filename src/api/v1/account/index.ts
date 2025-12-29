@@ -49,6 +49,15 @@ accountRouter.post(
   "/get-presigned-url",
   verifyCookies,
   AsyncHandler(async (req, res) => {
+    if (
+      !process.env.AWS_SECRET_ACCESS_KEY &&
+      !process.env.AWS_ACCESS_KEY_ID &&
+      !process.env.AWS_REGION &&
+      !process.env.AWS_BUCKET_NAME
+    ) {
+      return failureRes(res, "AWS S3 details is not configured", 500);
+    }
+
     if (!req._id!) {
       return failureRes(res, "Unauthorized, logged in now", 401);
     }
