@@ -20,7 +20,7 @@ const authRouter = expres.Router();
 
 const RUNNING_MODE = process.env.NODE_ENV! || "development";
 
-authRouter.get(
+authRouter.post(
   "/login",
   verifyCookies,
   loginFieldValidate,
