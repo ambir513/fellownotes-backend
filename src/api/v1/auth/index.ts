@@ -48,9 +48,178 @@ authRouter.post(
         url: `${token}`,
       });
     } else {
-      await sendEmail(email, "Your Login Link (Expires in 1 Hour)", {
-        url: `https://localhost:3000/verify-email?token=${token}`,
-      });
+      await sendEmail(
+        email,
+        "Your Login Link (Expires in 1 Hour)",
+        `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign in</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+  </style>
+</head>
+
+<body
+  style="
+    margin:0;
+    padding:0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  "
+>
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center" style="padding:10px 8px;">
+        <!-- CARD -->
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          style="
+            max-width:420px;
+            background:#18181b;
+            border:1px solid #27272a;
+            border-radius:16px;
+          "
+        >
+<tr>
+  <td
+    style="
+      padding:32px 32px 20px 32px;
+      border-bottom:1px solid #27272a;
+      color:#fafafa;
+    "
+  >
+    <table
+      role="presentation"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+    >
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0">
+            <tr>
+              <!-- LOGO -->
+              <td style="padding-right:10px;">
+                <img
+                  src="https://res.cloudinary.com/dvvxpzajh/image/upload/v1767719955/fellow_notes_gwi7up.png"
+                  alt="Fellow Notes"
+                  width="40"
+                  style="display:block;border:0;"
+                />
+              </td>
+
+              <!-- TEXT -->
+              <td>
+                <p
+                  style="
+                    margin:0;
+                    font-size:20px;
+                    font-weight:700;
+                    letter-spacing:-0.01em;
+                    color:#fafafa;
+                  "
+                >
+                  FellowNotes.app
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+          <!-- CONTENT -->
+          <tr>
+            <td style="padding:24px 32px;color:#fafafa;">
+            <p  style="
+                  font-size:18px;">Sign in to Fellow Notes </p>
+              <p
+                style="
+                  margin:0 0 20px 0;
+                  font-size:14px;
+                  color:#a1a1aa;
+                  line-height:1.6;
+                "
+              >
+                Use the button below to securely sign in to your account.
+                This magic link is valid for <strong>1 hour</strong>.
+              </p>
+
+              <a
+                href=${`${process.env.WEB_URL!}/verify-email?token=${token}`}
+                style="
+                  display:inline-block;
+                  padding:12px 20px;
+                  background:#fafafa;
+                  color:#09090b;
+                  text-decoration:none;
+                  border-radius:10px;
+                  font-weight:600;
+                  font-size:14px;
+                "
+              >
+                Sign in securely
+              </a>
+
+              <p
+                style="
+                  margin-top:24px;
+                  font-size:12px;
+                  color:#71717a;
+                  line-height:1.5;
+                "
+              >
+                Didn’t request this email? You can safely ignore it.
+                Your account will remain secure.
+              </p>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td
+              style="
+                padding:20px 32px;
+                border-top:1px solid #27272a;
+                text-align:center;
+              "
+            >
+              <p
+                style="
+                  margin:0;
+                  font-size:12px;
+                  color:#71717a;
+                "
+              >
+                © 2026 Fellow Notes. All rights reserved.
+              </p>
+
+              <p
+                style="
+                  margin:6px 0 0 0;
+                  font-size:11px;
+                  color:#52525b;
+                "
+              >
+                This is an automated message. Please do not reply.
+              </p>
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+      );
 
       await createLoginSession(email);
       return successRes(res, "check your email", 200, {
@@ -74,7 +243,13 @@ authRouter.get(
 
     logger(decoded?.email! + " - invalid or expired token", "warning");
     if (!decoded || !decoded.email) {
-      throwError("Invalid or expired token");
+      return failureRes(res, "Invalid or expired token");
+    }
+
+    const isUserCahedExis = await getLoginSession(decoded?.email as string);
+
+    if (!isUserCahedExis) {
+      return failureRes(res, "Session expired or invalid token");
     }
 
     let id;

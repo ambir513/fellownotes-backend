@@ -13,6 +13,26 @@ const accountRouter = express.Router();
 const UPDATE_ACCOUNT_SELECT_FIELD =
   "createdAt avatar name username email bio age location course plan";
 
+accountRouter.get(
+  "/me",
+  verifyCookies,
+  AsyncHandler(async (req, res) => {
+    const _id = req._id!;
+
+    if (!_id) {
+      return failureRes(res, "Unauthorized, logged in now", 401);
+    }
+
+    const userAccount = await User.findById(_id)
+      .select(UPDATE_ACCOUNT_SELECT_FIELD)
+      .lean();
+
+    return successRes(res, "User account fetched successfully", 200, {
+      ...userAccount,
+    });
+  }),
+);
+
 accountRouter.patch(
   "/edit",
   verifyCookies,
@@ -63,7 +83,7 @@ accountRouter.post(
     }
 
     if (!req.body.mime) {
-      return failureRes(res, "Meme key is required", 400);
+      return failureRes(res, "mime key is required", 400);
     }
 
     const filename = uuidv4() + "." + req.body?.mime;
